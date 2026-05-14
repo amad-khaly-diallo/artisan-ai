@@ -23,6 +23,8 @@ export interface Database {
           whatsapp_number?: string | null
           bio?: string | null
           services?: string[] | null
+          created_at?: string
+          updated_at?: string
         }
         Update: {
           full_name?: string | null
@@ -33,6 +35,7 @@ export interface Database {
           services?: string[] | null
           updated_at?: string
         }
+        Relationships: []
       }
       subscriptions: {
         Row: {
@@ -53,6 +56,7 @@ export interface Database {
           plan: 'starter' | 'pro' | 'team'
           status: 'active' | 'canceled' | 'past_due' | 'trialing'
           current_period_end?: string | null
+          created_at?: string
         }
         Update: {
           stripe_customer_id?: string | null
@@ -61,6 +65,15 @@ export interface Database {
           status?: 'active' | 'canceled' | 'past_due' | 'trialing'
           current_period_end?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: 'subscriptions_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: true
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
       }
       conversations: {
         Row: {
@@ -79,12 +92,22 @@ export interface Database {
           client_name?: string | null
           status?: 'open' | 'closed'
           last_message_at?: string | null
+          created_at?: string
         }
         Update: {
           client_name?: string | null
           status?: 'open' | 'closed'
           last_message_at?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: 'conversations_artisan_id_fkey'
+            columns: ['artisan_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
       }
       messages: {
         Row: {
@@ -101,8 +124,20 @@ export interface Database {
           from_type: 'client' | 'ai' | 'artisan'
           content: string
           whatsapp_sid?: string | null
+          created_at?: string
         }
-        Update: never
+        Update: {
+          whatsapp_sid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'messages_conversation_id_fkey'
+            columns: ['conversation_id']
+            isOneToOne: false
+            referencedRelation: 'conversations'
+            referencedColumns: ['id']
+          }
+        ]
       }
       notifications: {
         Row: {
@@ -119,12 +154,25 @@ export interface Database {
           type: 'new_message' | 'new_conversation'
           message: string
           read?: boolean
+          created_at?: string
         }
         Update: {
           read?: boolean
         }
+        Relationships: [
+          {
+            foreignKeyName: 'notifications_artisan_id_fkey'
+            columns: ['artisan_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
       }
     }
+    Views: Record<string, never>
+    Functions: Record<string, never>
+    Enums: Record<string, never>
   }
 }
 
