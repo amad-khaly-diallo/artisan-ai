@@ -29,7 +29,7 @@ export async function register(formData: FormData) {
 
   if (error) return { error: error.message }
 
-  redirect('/dashboard')
+  redirect('/profile')
 }
 
 export async function logout() {

@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { MessageSquare, Bell, Users, TrendingUp } from 'lucide-react'
+import { MessageSquare, Bell, Users, TrendingUp, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function DashboardPage() {
@@ -10,6 +10,14 @@ export default async function DashboardPage() {
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('bio, business_name, services')
+    .eq('id', user.id)
+    .single()
+
+  const profileIncomplete = !profile?.bio || !profile?.business_name
 
   const [
     { count: openConversations },
@@ -76,6 +84,19 @@ export default async function DashboardPage() {
         <h1 className="text-2xl font-bold text-gray-900">Tableau de bord</h1>
         <p className="text-gray-500 mt-1">Vue d'ensemble de votre activité</p>
       </div>
+
+      {profileIncomplete && (
+        <div className="mb-6 flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 shrink-0" />
+          <div className="flex-1">
+            <p className="text-sm font-medium text-amber-800">Profil incomplet</p>
+            <p className="text-sm text-amber-700 mt-0.5">
+              L'IA ne peut pas répondre correctement sans votre nom d'entreprise et description.{' '}
+              <Link href="/profile" className="font-medium underline">Compléter le profil</Link>
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">

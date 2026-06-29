@@ -50,12 +50,34 @@ export async function POST(request: NextRequest) {
 
   const supabase = createAdminClient()
 
-  // 1. Trouver l'artisan via son numéro WhatsApp
-  const { data: artisanProfile } = await supabase
-    .from('profiles')
-    .select('id, full_name, business_name, bio, services, whatsapp_number')
-    .eq('whatsapp_number', toNumber)
-    .single()
+  // 1. Trouver l'artisan
+  let artisanProfile = null
+
+  if (process.env.NODE_ENV !== 'production') {
+    // En dev : toujours utiliser le dernier utilisateur connecté
+    const { data: { users } } = await supabase.auth.admin.listUsers()
+    const lastConnected = users
+      .filter((u) => u.last_sign_in_at)
+      .sort((a, b) => new Date(b.last_sign_in_at!).getTime() - new Date(a.last_sign_in_at!).getTime())[0]
+
+    if (lastConnected) {
+      const { data: devProfile } = await supabase
+        .from('profiles')
+        .select('id, full_name, business_name, bio, services, whatsapp_number')
+        .eq('id', lastConnected.id)
+        .single()
+      artisanProfile = devProfile
+      console.log(`[webhook][dev] Artisan → dernier connecté : ${artisanProfile?.full_name ?? lastConnected.email}`)
+    }
+  } else {
+    // En prod : trouver l'artisan via son numéro WhatsApp
+    const { data } = await supabase
+      .from('profiles')
+      .select('id, full_name, business_name, bio, services, whatsapp_number')
+      .eq('whatsapp_number', toNumber)
+      .single()
+    artisanProfile = data
+  }
 
   if (!artisanProfile) {
     console.error(`[webhook] Aucun artisan trouvé pour le numéro ${toNumber}`)
