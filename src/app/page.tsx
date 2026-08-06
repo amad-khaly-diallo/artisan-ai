@@ -114,7 +114,7 @@ export default function LandingPage() {
             <Link href="/login">
               <Button variant="ghost">Se connecter</Button>
             </Link>
-            <Link href="/register">
+            <Link href="/login">
               <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
                 Essayer gratuitement
               </Button>
@@ -139,7 +139,7 @@ export default function LandingPage() {
           notifie des nouvelles demandes.
         </p>
         <div className="mt-10 flex items-center gap-4">
-          <Link href="/register">
+          <Link href="/login">
             <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white px-8">
               Démarrer gratuitement <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
@@ -236,7 +236,7 @@ export default function LandingPage() {
                       </li>
                     ))}
                   </ul>
-                  <Link href="/register">
+                  <Link href="/login">
                     <Button
                       className={`w-full ${plan.highlight ? "bg-indigo-600 hover:bg-indigo-700 text-white" : ""}`}
                       variant={plan.highlight ? "default" : "outline"}

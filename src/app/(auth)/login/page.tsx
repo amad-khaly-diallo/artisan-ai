@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { login } from '@/lib/actions/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -64,10 +63,7 @@ export default function LoginPage() {
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Se connecter'}
           </Button>
           <p className="text-sm text-muted-foreground text-center">
-            Pas encore de compte ?{' '}
-            <Link href="/register" className="text-indigo-600 hover:underline font-medium">
-              Créer un compte
-            </Link>
+            Démo uniquement — inscriptions désactivées
           </p>
         </CardFooter>
       </form>
