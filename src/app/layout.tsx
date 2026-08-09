@@ -24,6 +24,10 @@ export default function RootLayout({
     <html
       lang="fr"
       className={`${inter.variable} h-full antialiased`}
+      // Certaines extensions de navigateur ajoutent des attributs sur <html>
+      // avant l'hydratation. Ne concerne que les attributs de cette balise :
+      // les vrais écarts dans l'application restent signalés.
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <TooltipProvider>
