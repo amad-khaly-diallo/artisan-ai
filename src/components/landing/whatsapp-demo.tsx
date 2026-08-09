@@ -88,8 +88,8 @@ export function WhatsAppDemo() {
             <Phone className="h-4 w-4 shrink-0 opacity-80" />
           </div>
 
-          {/* Fil de discussion — le haut s'estompe quand l'historique déborde */}
-          <div className="flex h-[420px] flex-col justify-end gap-2 px-3 py-4 [mask-image:linear-gradient(to_bottom,transparent_0,#000_56px)]">
+          {/* Fil de discussion - le haut s'estompe quand l'historique déborde */}
+          <div className="flex h-[470px] flex-col justify-end gap-2 px-3 py-4 [mask-image:linear-gradient(to_bottom,transparent_0,#000_56px)] lg:h-[545px]">
             <AnimatePresence initial={false}>
               {script.slice(0, visible).map((msg, i) => (
                 <motion.div
@@ -102,11 +102,10 @@ export function WhatsAppDemo() {
                   }
                 >
                   <div
-                    className={`max-w-[82%] rounded-xl px-3 py-2 text-[13px] leading-snug shadow-sm ${
-                      msg.from === 'ai'
+                    className={`max-w-[82%] rounded-xl px-3 py-2 text-[13px] leading-snug shadow-sm ${msg.from === 'ai'
                         ? 'rounded-br-sm bg-[#DCF8C6] text-neutral-800'
                         : 'rounded-bl-sm bg-white text-neutral-800'
-                    }`}
+                      }`}
                   >
                     <p className="whitespace-pre-line">{msg.text}</p>
                     <span className="mt-1 flex items-center justify-end gap-1 text-[10px] text-neutral-500">

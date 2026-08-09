@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { DemoLoginButton } from '@/components/landing/demo-login-button'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 
@@ -62,8 +63,19 @@ export default function LoginPage() {
           <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700" disabled={loading}>
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Se connecter'}
           </Button>
-          <p className="text-sm text-muted-foreground text-center">
-            Démo uniquement — inscriptions désactivées
+
+          <div className="flex w-full items-center gap-3">
+            <span className="h-px flex-1 bg-border" />
+            <span className="text-xs text-muted-foreground">ou</span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
+
+          <DemoLoginButton variant="outline" className="w-full">
+            Entrer dans la démo
+          </DemoLoginButton>
+
+          <p className="text-center text-sm text-muted-foreground">
+            Démo uniquement - inscriptions désactivées
           </p>
         </CardFooter>
       </form>

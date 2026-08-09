@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { WhatsAppDemo } from "@/components/landing/whatsapp-demo";
+import { DemoLoginButton } from "@/components/landing/demo-login-button";
 import {
   MessageSquare,
   Bell,
@@ -128,23 +129,6 @@ const plans = [
 export default function LandingPage() {
   return (
     <main className="flex min-h-screen flex-col bg-white">
-      {/* Bandeau démo */}
-      <div className="bg-neutral-900 px-4 py-2.5 text-[13px] text-neutral-300">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-2 gap-y-1.5">
-          <span className="font-medium text-white">Projet de démonstration</span>
-          <span className="hidden text-neutral-600 sm:inline">•</span>
-          <span className="flex flex-wrap items-center justify-center gap-1.5">
-            <span className="text-neutral-400">Connexion&nbsp;:</span>
-            <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[12px] text-white">
-              khalyamad.d@test.com
-            </code>
-            <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[12px] text-white">
-              Demo-ArtisanAI-2026!
-            </code>
-          </span>
-        </div>
-      </div>
-
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-neutral-200/80 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
@@ -182,14 +166,12 @@ export default function LandingPage() {
                 Se connecter
               </Button>
             </Link>
-            <Link href="/login">
-              <Button
-                size="sm"
-                className="bg-neutral-900 text-white shadow-sm hover:bg-neutral-800"
-              >
-                Voir la démo
-              </Button>
-            </Link>
+            <DemoLoginButton
+              size="sm"
+              className="bg-neutral-900 text-white shadow-sm hover:bg-neutral-800"
+            >
+              Voir la démo
+            </DemoLoginButton>
           </div>
         </div>
       </nav>
@@ -206,7 +188,7 @@ export default function LandingPage() {
           <div className="text-center lg:text-left">
             <Badge className="mb-6 inline-flex items-center gap-1.5 border-indigo-200 bg-indigo-50 text-indigo-700 hover:bg-indigo-50">
               <Sparkles className="h-3.5 w-3.5" />
-              Propulsé par Claude — sur WhatsApp
+              Propulsé par Claude - sur WhatsApp
             </Badge>
 
             <h1 className="text-balance text-4xl font-extrabold leading-[1.08] tracking-tight text-neutral-900 sm:text-5xl lg:text-[3.4rem]">
@@ -223,20 +205,24 @@ export default function LandingPage() {
             </p>
 
             <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
-              <Link href="/login" className="w-full sm:w-auto">
-                <Button
-                  size="lg"
-                  className="w-full bg-neutral-900 px-7 text-white shadow-lg shadow-neutral-900/15 transition-transform hover:bg-neutral-800 hover:-translate-y-0.5 sm:w-auto"
-                >
-                  Essayer la démo <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+              <DemoLoginButton
+                size="lg"
+                withArrow
+                className="w-full bg-neutral-900 px-7 text-white shadow-lg shadow-neutral-900/15 transition-transform hover:-translate-y-0.5 hover:bg-neutral-800 sm:w-auto"
+              >
+                Entrer dans la démo
+              </DemoLoginButton>
               <Link href="#fonctionnement" className="w-full sm:w-auto">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto">
                   Voir comment ça marche
                 </Button>
               </Link>
             </div>
+
+            <p className="mt-4 text-sm text-neutral-500">
+              Projet de démonstration - aucune inscription, le compte est
+              pré-rempli.
+            </p>
 
             <div className="mt-12 flex items-center justify-center gap-8 lg:justify-start">
               {[
@@ -355,11 +341,10 @@ export default function LandingPage() {
             {plans.map((plan) => (
               <div
                 key={plan.name}
-                className={`relative rounded-2xl bg-white p-8 transition-all ${
-                  plan.highlight
+                className={`relative rounded-2xl bg-white p-8 transition-all ${plan.highlight
                     ? "border-2 border-indigo-500 shadow-xl shadow-indigo-500/10 md:-translate-y-3"
                     : "border border-neutral-200 shadow-sm hover:border-neutral-300 hover:shadow-md"
-                }`}
+                  }`}
               >
                 {plan.highlight && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -392,18 +377,17 @@ export default function LandingPage() {
                   ))}
                 </ul>
 
-                <Link href="/login" className="mt-8 block">
-                  <Button
-                    className={`w-full ${
-                      plan.highlight
+                <div className="mt-8">
+                  <DemoLoginButton
+                    className={`w-full ${plan.highlight
                         ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/20 hover:from-indigo-700 hover:to-violet-700"
                         : ""
-                    }`}
+                      }`}
                     variant={plan.highlight ? "default" : "outline"}
                   >
                     {plan.cta}
-                  </Button>
-                </Link>
+                  </DemoLoginButton>
+                </div>
               </div>
             ))}
           </div>
@@ -429,14 +413,15 @@ export default function LandingPage() {
               Explorez le dashboard, les conversations et le parcours complet
               avec le compte de démonstration.
             </p>
-            <Link href="/login" className="mt-9 inline-block">
-              <Button
+            <div className="mt-9">
+              <DemoLoginButton
                 size="lg"
+                withArrow
                 className="bg-white px-8 text-neutral-900 shadow-lg transition-transform hover:-translate-y-0.5 hover:bg-neutral-100"
               >
-                Accéder à la démo <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+                Accéder à la démo
+              </DemoLoginButton>
+            </div>
           </div>
         </div>
       </section>
@@ -452,7 +437,7 @@ export default function LandingPage() {
           </div>
 
           <p className="text-center text-sm text-neutral-500">
-            Projet personnel de démonstration — Next.js, Supabase, Stripe,
+            Projet personnel de démonstration - Next.js, Supabase, Stripe,
             Twilio &amp; Claude
           </p>
 
