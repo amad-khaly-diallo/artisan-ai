@@ -89,7 +89,7 @@ export function WhatsAppDemo() {
           </div>
 
           {/* Fil de discussion - le haut s'estompe quand l'historique déborde */}
-          <div className="flex h-[470px] flex-col justify-end gap-2 px-3 py-4 [mask-image:linear-gradient(to_bottom,transparent_0,#000_56px)] lg:h-[545px]">
+          <div className="flex h-[470px] flex-col justify-end gap-2 px-3 py-4 [mask-image:linear-gradient(to_bottom,transparent_0,#000_56px)] lg:h-[490px]">
             <AnimatePresence initial={false}>
               {script.slice(0, visible).map((msg, i) => (
                 <motion.div
