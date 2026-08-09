@@ -3,11 +3,16 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getStripe, PRICE_IDS } from '@/lib/stripe'
 import { PLANS, type PlanKey } from '@/lib/plans'
+import { DEMO_BLOCKED_MESSAGE, isDemoUserId } from '@/lib/demo'
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
+
+  if (isDemoUserId(user.id)) {
+    return NextResponse.json({ error: DEMO_BLOCKED_MESSAGE }, { status: 403 })
+  }
 
   const { plan } = await request.json() as { plan: PlanKey }
   if (!PLANS[plan]) return NextResponse.json({ error: 'Plan invalide' }, { status: 400 })

@@ -3,16 +3,17 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { Loader2, CheckCircle2, ExternalLink } from 'lucide-react'
+import { Loader2, CheckCircle2, ExternalLink, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { PLANS, type PlanKey } from '@/lib/plans'
 import type { Subscription } from '@/types/database'
 
 interface BillingClientProps {
   subscription: Subscription | null
+  readOnly?: boolean
 }
 
-export function BillingClient({ subscription }: BillingClientProps) {
+export function BillingClient({ subscription, readOnly = false }: BillingClientProps) {
   const [loading, setLoading] = useState<PlanKey | 'portal' | null>(null)
 
   async function handleCheckout(plan: PlanKey) {
@@ -58,6 +59,13 @@ export function BillingClient({ subscription }: BillingClientProps) {
 
   return (
     <div className="space-y-8">
+      {readOnly && (
+        <p className="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          <Lock className="h-4 w-4 shrink-0" />
+          Mode démonstration : l&apos;abonnement ne peut pas être modifié.
+        </p>
+      )}
+
       {/* Plan actuel */}
       {subscription && (
         <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-5 flex items-center justify-between">
@@ -87,7 +95,7 @@ export function BillingClient({ subscription }: BillingClientProps) {
           <Button
             variant="outline"
             onClick={handlePortal}
-            disabled={loading !== null}
+            disabled={readOnly || loading !== null}
             className="shrink-0"
           >
             {loading === 'portal'
@@ -146,7 +154,7 @@ export function BillingClient({ subscription }: BillingClientProps) {
                 )}
                 variant={isCurrent ? 'default' : 'outline'}
                 onClick={() => handleCheckout(key)}
-                disabled={isCurrent || loading !== null}
+                disabled={readOnly || isCurrent || loading !== null}
               >
                 {isLoadingThis
                   ? <Loader2 className="h-4 w-4 animate-spin" />

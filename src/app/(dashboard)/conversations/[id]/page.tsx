@@ -5,6 +5,7 @@ import { ArrowLeft, Bot, User, Wrench } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { ReplyBox } from '@/components/dashboard/reply-box'
+import { isDemoUserId } from '@/lib/demo'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -22,6 +23,9 @@ export default async function ConversationDetailPage({ params }: Props) {
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  // Le contenu des échanges reste privé : la démo s'arrête à la liste
+  if (isDemoUserId(user.id)) redirect('/conversations')
 
   const { data: conversation } = await supabase
     .from('conversations')

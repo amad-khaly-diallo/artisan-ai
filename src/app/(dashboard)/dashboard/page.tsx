@@ -4,12 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { MessageSquare, Bell, Users, TrendingUp, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
+import { isDemoUserId, maskPhone } from '@/lib/demo'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  const isDemo = isDemoUserId(user.id)
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -132,30 +135,47 @@ export default async function DashboardPage() {
             </div>
           ) : (
             <div className="divide-y">
-              {recentConversations.map((conv) => (
-                <Link
-                  key={conv.id}
-                  href={`/conversations/${conv.id}`}
-                  className="flex items-center justify-between py-3 hover:bg-gray-50 -mx-6 px-6 transition-colors"
-                >
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">
-                      {conv.client_name ?? conv.client_phone}
-                    </p>
-                    <p className="text-xs text-gray-500">{conv.client_phone}</p>
+              {recentConversations.map((conv) => {
+                const row = (
+                  <>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {conv.client_name ?? (isDemo ? maskPhone(conv.client_phone) : conv.client_phone)}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {isDemo ? maskPhone(conv.client_phone) : conv.client_phone}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      {conv.last_message_at && (
+                        <span className="text-xs text-gray-400">
+                          {new Date(conv.last_message_at).toLocaleDateString('fr-FR')}
+                        </span>
+                      )}
+                      <Badge variant={conv.status === 'open' ? 'default' : 'secondary'}>
+                        {conv.status === 'open' ? 'Ouvert' : 'Fermé'}
+                      </Badge>
+                    </div>
+                  </>
+                )
+
+                return isDemo ? (
+                  <div
+                    key={conv.id}
+                    className="-mx-6 flex items-center justify-between px-6 py-3"
+                  >
+                    {row}
                   </div>
-                  <div className="flex items-center gap-3">
-                    {conv.last_message_at && (
-                      <span className="text-xs text-gray-400">
-                        {new Date(conv.last_message_at).toLocaleDateString('fr-FR')}
-                      </span>
-                    )}
-                    <Badge variant={conv.status === 'open' ? 'default' : 'secondary'}>
-                      {conv.status === 'open' ? 'Ouvert' : 'Fermé'}
-                    </Badge>
-                  </div>
-                </Link>
-              ))}
+                ) : (
+                  <Link
+                    key={conv.id}
+                    href={`/conversations/${conv.id}`}
+                    className="-mx-6 flex items-center justify-between px-6 py-3 transition-colors hover:bg-gray-50"
+                  >
+                    {row}
+                  </Link>
+                )
+              })}
             </div>
           )}
         </CardContent>

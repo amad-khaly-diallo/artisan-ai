@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { User, Wrench } from 'lucide-react'
 import { ProfileForm } from '@/components/dashboard/profile-form'
+import { isDemoUserId } from '@/lib/demo'
 
 export default async function ProfilePage() {
   const supabase = await createClient()
@@ -79,7 +80,7 @@ export default async function ProfilePage() {
           <CardTitle className="text-base">Modifier mes informations</CardTitle>
         </CardHeader>
         <CardContent>
-          <ProfileForm profile={profile} />
+          <ProfileForm profile={profile} readOnly={isDemoUserId(user.id)} />
         </CardContent>
       </Card>
     </div>

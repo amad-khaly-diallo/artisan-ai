@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Sidebar } from '@/components/dashboard/sidebar'
+import { isDemoUserId } from '@/lib/demo'
+import { Eye } from 'lucide-react'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -40,6 +42,16 @@ export default async function DashboardLayout({ children }: { children: React.Re
         unreadCount={unreadCount ?? 0}
       />
       <main className="flex-1 overflow-y-auto">
+        {isDemoUserId(user.id) && (
+          <div className="flex items-center justify-center gap-2 bg-amber-50 px-4 py-2 text-center text-sm text-amber-800 ring-1 ring-inset ring-amber-200">
+            <Eye className="h-4 w-4 shrink-0" />
+            <span>
+              <strong className="font-semibold">Mode démonstration</strong> - lecture
+              seule. Les modifications, l&apos;envoi de messages et le détail des
+              conversations sont désactivés.
+            </span>
+          </div>
+        )}
         {children}
       </main>
     </div>

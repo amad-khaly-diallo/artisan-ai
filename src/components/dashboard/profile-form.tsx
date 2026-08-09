@@ -7,14 +7,15 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Lock } from 'lucide-react'
 import type { Profile } from '@/types/database'
 
 interface ProfileFormProps {
   profile: Profile
+  readOnly?: boolean
 }
 
-export function ProfileForm({ profile }: ProfileFormProps) {
+export function ProfileForm({ profile, readOnly = false }: ProfileFormProps) {
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -30,7 +31,12 @@ export function ProfileForm({ profile }: ProfileFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6"
+      aria-disabled={readOnly || undefined}
+    >
+      <fieldset disabled={readOnly} className="space-y-6 disabled:opacity-60">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="full_name">Nom complet</Label>
@@ -113,6 +119,14 @@ export function ProfileForm({ profile }: ProfileFormProps) {
         {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
         Enregistrer les modifications
       </Button>
+      </fieldset>
+
+      {readOnly && (
+        <p className="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          <Lock className="h-4 w-4 shrink-0" />
+          Le profil du compte de démonstration est en lecture seule.
+        </p>
+      )}
     </form>
   )
 }

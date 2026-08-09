@@ -2,11 +2,16 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getStripe } from '@/lib/stripe'
+import { DEMO_BLOCKED_MESSAGE, isDemoUserId } from '@/lib/demo'
 
 export async function POST() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
+
+  if (isDemoUserId(user.id)) {
+    return NextResponse.json({ error: DEMO_BLOCKED_MESSAGE }, { status: 403 })
+  }
 
   const admin = createAdminClient()
   const { data: subscription } = await admin

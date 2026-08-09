@@ -2,12 +2,15 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { DEMO_BLOCKED_MESSAGE, isDemoUserId } from '@/lib/demo'
 
 export async function updateProfile(formData: FormData) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Non authentifié' }
+
+  if (isDemoUserId(user.id)) return { error: DEMO_BLOCKED_MESSAGE }
 
   const servicesRaw = (formData.get('services') as string) ?? ''
   const services = servicesRaw

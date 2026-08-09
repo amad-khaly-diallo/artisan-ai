@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { BillingClient } from '@/components/dashboard/billing-client'
+import { isDemoUserId } from '@/lib/demo'
 import { CheckCircle2, XCircle } from 'lucide-react'
 
 interface Props {
@@ -43,7 +44,7 @@ export default async function BillingPage({ searchParams }: Props) {
         </div>
       )}
 
-      <BillingClient subscription={subscription} />
+      <BillingClient subscription={subscription} readOnly={isDemoUserId(user.id)} />
     </div>
   )
 }

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { DEMO_BLOCKED_MESSAGE, isDemoUserId } from '@/lib/demo'
 
 export async function sendMessage(conversationId: string, content: string) {
   if (!content.trim()) return { error: 'Message vide' }
@@ -10,6 +11,9 @@ export async function sendMessage(conversationId: string, content: string) {
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Non authentifié' }
+
+  // Le compte de démo ne doit pas pouvoir envoyer de vrais messages WhatsApp
+  if (isDemoUserId(user.id)) return { error: DEMO_BLOCKED_MESSAGE }
 
   // Récupérer la conversation + le numéro du client
   const { data: conversation } = await supabase
