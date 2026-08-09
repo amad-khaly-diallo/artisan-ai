@@ -64,7 +64,7 @@ export function BillingClient({ subscription }: BillingClientProps) {
           <div>
             <p className="text-sm text-indigo-600 font-medium">Plan actuel</p>
             <p className="text-xl font-bold text-indigo-900 mt-0.5">
-              {PLANS[subscription.plan].name} — {PLANS[subscription.plan].price}/mois
+              {PLANS[subscription.plan].name} - {PLANS[subscription.plan].price}/mois
             </p>
             {subscription.current_period_end && (
               <p className="text-xs text-indigo-500 mt-1">
@@ -78,10 +78,10 @@ export function BillingClient({ subscription }: BillingClientProps) {
               'mt-1 text-xs font-medium',
               isActive ? 'text-green-600' : 'text-red-500'
             )}>
-              {subscription.status === 'active'    && 'Actif'}
-              {subscription.status === 'trialing'  && 'Période d\'essai'}
-              {subscription.status === 'past_due'  && 'Paiement en retard'}
-              {subscription.status === 'canceled'  && 'Annulé'}
+              {subscription.status === 'active' && 'Actif'}
+              {subscription.status === 'trialing' && 'Période d\'essai'}
+              {subscription.status === 'past_due' && 'Paiement en retard'}
+              {subscription.status === 'canceled' && 'Annulé'}
             </p>
           </div>
           <Button

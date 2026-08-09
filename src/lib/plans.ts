@@ -1,4 +1,4 @@
-// Fichier importable côté client ET serveur — pas d'import Stripe ici
+// Fichier importable côté client ET serveur - pas d'import Stripe ici
 
 export const PLANS = {
   starter: {

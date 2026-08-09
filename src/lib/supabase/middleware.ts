@@ -25,7 +25,7 @@ export async function updateSession(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Routes protégées — redirige vers /login si pas connecté
+  // Routes protégées - redirige vers /login si pas connecté
   const protectedPaths = ['/dashboard', '/conversations', '/profile', '/billing']
   const isProtected = protectedPaths.some(p => request.nextUrl.pathname.startsWith(p))
 

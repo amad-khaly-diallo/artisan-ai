@@ -36,12 +36,12 @@ export async function POST(request: NextRequest) {
 
   const params = new URLSearchParams(rawBody)
 
-  const toRaw    = params.get('To')    ?? ''   // ex: "whatsapp:+33612345678"
-  const fromRaw  = params.get('From')  ?? ''   // ex: "whatsapp:+33611223344"
-  const body     = params.get('Body')  ?? ''
-  const profile  = params.get('ProfileName') ?? null
+  const toRaw = params.get('To') ?? ''   // ex: "whatsapp:+33612345678"
+  const fromRaw = params.get('From') ?? ''   // ex: "whatsapp:+33611223344"
+  const body = params.get('Body') ?? ''
+  const profile = params.get('ProfileName') ?? null
 
-  const toNumber   = toRaw.replace('whatsapp:', '').trim()
+  const toNumber = toRaw.replace('whatsapp:', '').trim()
   const fromNumber = fromRaw.replace('whatsapp:', '').trim()
 
   if (!fromNumber || !body.trim()) {
@@ -161,7 +161,7 @@ export async function POST(request: NextRequest) {
 }
 
 // ---------------------------------------------------------------------------
-// Réponse IA — sera complétée à l'étape 5
+// Réponse IA - sera complétée à l'étape 5
 // ---------------------------------------------------------------------------
 
 interface AiReplyParams {

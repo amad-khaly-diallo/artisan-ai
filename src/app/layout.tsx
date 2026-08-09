@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ArtisanAI — Votre assistant WhatsApp intelligent",
+  title: "ArtisanAI - Votre assistant WhatsApp intelligent",
   description:
     "Ne ratez plus aucun client. ArtisanAI répond automatiquement à vos messages WhatsApp et vous notifie des nouvelles demandes.",
 };
