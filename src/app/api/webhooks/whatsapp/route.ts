@@ -21,7 +21,12 @@ function validateTwilioSignature(request: NextRequest, body: string): boolean {
     .update(url + paramString)
     .digest('base64')
 
-  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))
+  // timingSafeEqual lève une exception si les longueurs diffèrent : on rejette avant
+  const received = Buffer.from(signature)
+  const computed = Buffer.from(expected)
+  if (received.length !== computed.length) return false
+
+  return crypto.timingSafeEqual(received, computed)
 }
 
 export async function POST(request: NextRequest) {
